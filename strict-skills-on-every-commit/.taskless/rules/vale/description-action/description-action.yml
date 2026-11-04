@@ -1,0 +1,6 @@
+extends: existence
+message: "The description should say when to use the skill. Start it with 'Use when'."
+level: warning
+scope: frontmatter.description
+raw:
+  - '(?i)\A\s*(?!use )\S'

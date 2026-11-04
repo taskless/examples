@@ -1,0 +1,2 @@
+black/tests/data/cases/conditional_expression.py:115:14  uncalled-function-in-condition
+black/tests/data/cases/conditional_expression.py:18:8  uncalled-function-in-condition

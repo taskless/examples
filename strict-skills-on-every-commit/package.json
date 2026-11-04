@@ -1,0 +1,17 @@
+{
+  "name": "blog-taskless-nori-lint",
+  "private": true,
+  "type": "module",
+  "description": "nori-lint's SKILL.md rules, rebuilt as Taskless rules and compared on 365 public skills",
+  "scripts": {
+    "corpus": "corpus/fetch.sh",
+    "compare": "node scripts/compare.mjs",
+    "test:rules": "taskless test .taskless/rules",
+    "bench": "node scripts/bench.mjs"
+  },
+  "devDependencies": {
+    "@taskless/cli": "0.12.0",
+    "glob": "^13.0.6",
+    "nori-lint": "0.4.0"
+  }
+}

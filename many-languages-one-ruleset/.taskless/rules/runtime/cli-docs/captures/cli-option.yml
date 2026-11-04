@@ -1,0 +1,13 @@
+id: cli-option
+language: TypeScript
+rule:
+  any:
+    - pattern: $CMD.option($FLAG)
+    - pattern: $CMD.option($FLAG, $$$)
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: cli-option
+    check: check.ts
+    match: anchor

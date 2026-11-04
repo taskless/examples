@@ -1,0 +1,16 @@
+id: env-read-py
+language: Python
+rule:
+  any:
+    - pattern: os.environ[$VAR]
+    - pattern: os.environ.get($VAR)
+    - pattern: os.environ.get($VAR, $$$)
+    - pattern: os.getenv($VAR)
+    - pattern: os.getenv($VAR, $$$)
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: env-read-py
+    check: check.ts
+    match: anchor

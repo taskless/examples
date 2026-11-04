@@ -1,0 +1,57 @@
+id: always-truthy-enum
+language: Python
+severity: warning
+message: "`$X` is a `$T` member, and Enum members are always true."
+note: |
+  Enum members are always truthy unless the Enum defines `__bool__` or `__len__`.
+  Only Enums defined in the same file are checked.
+utils:
+  # The slot a condition sits in. For `a if cond else b` that is the middle operand only;
+  # the other two are values.
+  condition-slot:
+    any:
+      - inside: { kind: if_statement, field: condition }
+      - inside: { kind: elif_clause, field: condition }
+      - inside: { kind: while_statement, field: condition }
+      # `assert cond, msg`: the first operand is the condition, the second a message.
+      - all:
+          - nthChild: 1
+          - inside: { kind: assert_statement }
+      - all:
+          - nthChild: 2
+          - inside: { kind: conditional_expression }
+  # A condition, or part of one through `and`/`or`/`not`/parens. `convert or default_fn`
+  # outside a condition is a fallback value, so the chain has to end in a condition slot.
+  in-condition:
+    any:
+      - matches: condition-slot
+      - inside:
+          stopBy:
+            not:
+              any: [ { kind: boolean_operator }, { kind: not_operator }, { kind: parenthesized_expression } ]
+          any: [ { kind: boolean_operator }, { kind: not_operator }, { kind: parenthesized_expression } ]
+          matches: condition-slot
+rule:
+  all:
+    - kind: identifier
+      pattern: $X
+    - matches: in-condition
+    - inside:
+        kind: function_definition
+        stopBy: end
+        has:
+          field: parameters
+          has:
+            kind: typed_parameter
+            all:
+              - has: { pattern: $X }
+              - has: { field: type, pattern: $T }
+    - inside:
+        kind: module
+        stopBy: end
+        has:
+          kind: class_definition
+          all:
+            - has: { field: name, pattern: $T }
+            - has: { field: superclasses, has: { any: [ { kind: identifier, regex: '^Enum$' }, { kind: attribute, regex: '^enum\.Enum$' } ] } }
+            - not: { has: { field: body, stopBy: end, kind: function_definition, has: { field: name, kind: identifier, regex: '^__(bool|len)__$' } } }

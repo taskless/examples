@@ -1,0 +1,12 @@
+id: jsx-literal
+language: Tsx
+rule:
+  kind: jsx_text
+  regex: \S
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: jsx-literal
+    check: check.ts
+    match: anchor

@@ -1,0 +1,6 @@
+extends: occurrence
+message: "The frontmatter needs a description."
+level: error
+scope: raw
+min: 1
+token: '(?m)^description:[ \t]*(?:\S|\n[ \t]+\S)'

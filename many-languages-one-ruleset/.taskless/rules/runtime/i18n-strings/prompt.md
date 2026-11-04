@@ -1,0 +1,1 @@
+Text inside JSX elements comes from a locale file, and every key passed to `t()` in TSX or `_()` in Python exists in every file under `locales/`. If a hardcoded string already exists as a value in `en.json`, name that key in the finding.

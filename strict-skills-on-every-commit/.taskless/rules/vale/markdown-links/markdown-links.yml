@@ -1,0 +1,58 @@
+# nori-lint flags [text](url) outside fenced code, inline code and
+# <good_example>/<bad_example> blocks, and leaves images alone.
+#
+# Vale's link scope was the first try, and it is close: the parser already
+# skips code. But that scope also covers bare URLs and <autolinks>, which is
+# what this rule asks you to write, and Vale masks any link text that looks
+# like a URL or a path, so [references/tools.md](references/tools.md) became
+# indistinguishable from a bare URL. Only the raw scope still shows the
+# [text](url) syntax, and raw cannot see fences, so this is a short script
+# with the same line scan nori-lint uses.
+extends: script
+message: "Markdown link syntax. Write the bare URL, the reader is an LLM."
+level: warning
+scope: raw
+script: |
+  text := import("text")
+  matches := []
+  fence := false
+  example := false
+  offset := 0
+  for line in text.split(scope, "\n") {
+    t := text.trim_space(line)
+    if t == "<good_example>" || t == "<bad_example>" || t == "<good-example>" || t == "<bad-example>" {
+      example = true
+    } else if t == "</good_example>" || t == "</bad_example>" || t == "</good-example>" || t == "</bad-example>" {
+      example = false
+    } else if text.has_prefix(t, "```") {
+      fence = !fence
+    } else if !fence && !example {
+      // blank out inline code spans so a link shown as code is not a link
+      chars := []
+      incode := false
+      for c in line {
+        s := string(c)
+        if s == "`" { incode = !incode; chars = append(chars, " "); continue }
+        chars = append(chars, incode ? " " : s)
+      }
+      l := text.join(chars, "")
+      i := 0
+      for i < len(l) {
+        if l[i:i+1] != "[" || (i > 0 && l[i-1:i] == "!") { i = i + 1; continue }
+        cb := text.index(l[i+1:], "]")
+        if cb <= 0 { i = i + 1; continue }
+        cb = i + 1 + cb
+        if cb + 1 < len(l) && l[cb+1:cb+2] == "(" {
+          cp := text.index(l[cb+2:], ")")
+          if cp != -1 {
+            cp = cb + 2 + cp
+            matches = append(matches, {begin: offset + i, end: offset + cp + 1})
+            i = cp + 1
+            continue
+          }
+        }
+        i = cb + 1
+      }
+    }
+    offset = offset + len(line) + 1
+  }

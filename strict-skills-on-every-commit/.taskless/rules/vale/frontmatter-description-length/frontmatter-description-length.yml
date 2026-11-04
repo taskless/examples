@@ -1,0 +1,6 @@
+extends: existence
+message: "The description is over 1,024 characters, the Agent Skills limit."
+level: error
+scope: frontmatter.description
+raw:
+  - '\A[\s\S]{1025}'

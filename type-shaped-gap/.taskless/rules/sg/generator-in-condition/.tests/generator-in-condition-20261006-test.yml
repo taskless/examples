@@ -1,0 +1,21 @@
+id: generator-in-condition
+valid:
+  - |
+    def f(xs):
+        if any(x > 1 for x in xs):
+            pass
+  - |
+    def f(xs):
+        if [x for x in xs]:
+            pass
+  - |
+    def f(xs, all_rows):
+        rows = all_rows if xs is None else (r for r in xs)
+invalid:
+  - |
+    def f(xs):
+        if (x > 1 for x in xs):
+            pass
+  - |
+    def f(xs):
+        assert (x for x in xs)

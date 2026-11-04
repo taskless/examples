@@ -1,0 +1,60 @@
+id: uncalled-function-in-condition
+valid:
+  - |
+    def cond(): ...
+    if cond():
+        pass
+  - |
+    def cond(): ...
+    def h(cond):
+        if cond:
+            pass
+  - |
+    x = 1
+    if x:
+        pass
+  - |
+    def a(): ...
+    def b(): ...
+    f = a if flag else b
+  - |
+    def lam(): ...
+    def g(convert=None):
+        c = convert or lam
+  - |
+    def safe(): ...
+    def cut(v):
+        safe = isinstance(v, str)
+        if safe:
+            pass
+  - |
+    def cond(): ...
+    assert cond(), "called"
+  - |
+    def describe(): ...
+    def t(x):
+        assert x, describe
+invalid:
+  - |
+    def cond(): ...
+    assert cond
+  - |
+    def cond(): ...
+    if cond:
+        pass
+  - |
+    async def f(): ...
+    async def g():
+        if f:
+            pass
+  - |
+    def cond(): ...
+    while cond:
+        break
+  - |
+    def cond(): ...
+    x = 1 if cond else 2
+  - |
+    def cond(): ...
+    if not (cond and other):
+        pass
