@@ -1,0 +1,11 @@
+id: t-call
+language: Tsx
+rule:
+  pattern: t($KEY)
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: t-call
+    check: check.ts
+    match: anchor

@@ -1,0 +1,11 @@
+id: gettext-call
+language: Python
+rule:
+  pattern: _($KEY)
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: gettext-call
+    check: check.ts
+    match: anchor

@@ -1,0 +1,11 @@
+id: env-read-ts
+language: TypeScript
+rule:
+  pattern: process.env.$VAR
+metadata:
+  taskless:
+    version: 1
+    kind: runtime
+    name: env-read-ts
+    check: check.ts
+    match: anchor
