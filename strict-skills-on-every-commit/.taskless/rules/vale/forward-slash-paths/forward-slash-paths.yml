@@ -1,0 +1,6 @@
+extends: existence
+message: "'%s' is a Windows-style path. Use forward slashes, which work on every platform."
+level: error
+scope: raw
+raw:
+  - '(?<![\w.:\\])[\w.-]+(?:\\[\w.-]+)+\.[A-Za-z0-9]{1,5}\b'

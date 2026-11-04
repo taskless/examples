@@ -1,0 +1,9 @@
+extends: existence
+message: "The skill opens with a title heading. The name in the frontmatter already says it."
+level: warning
+scope: raw
+# The lookbehind skips the frontmatter so the finding points at the heading
+# itself. Vale compiles patterns with regexp2, which allows a variable-length
+# lookbehind.
+raw:
+  - '(?<=\A(?:---[ \t]*\n(?:(?!---[ \t]*\n)[^\n]*\n)*?---[ \t]*\n)?(?:[ \t]*\n)*)(?:#[^\n]*|[^\n]*\S[^\n]*\n[ \t]*(?:=+|-+)[ \t]*(?=\n|\z))'

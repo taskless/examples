@@ -1,0 +1,7 @@
+extends: existence
+message: "Bold or italic markup ('%s'). An LLM reader doesn't render it, so it only costs tokens."
+level: warning
+scope: [strong, emphasis]
+nonword: true
+tokens:
+  - '\S(?:.*\S)?'

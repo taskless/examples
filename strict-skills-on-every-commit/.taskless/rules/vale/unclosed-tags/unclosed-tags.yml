@@ -1,0 +1,43 @@
+# nori-lint's unclosed_tags: every <tag> needs as many </tag> as it has
+# openings, and no </tag> may appear without an opening. Counting is beyond
+# the declarative checks, so this is a Tengo script. Same scan as nori-lint:
+# anything between < and > with no space, not starting with !, not ending in /.
+extends: script
+message: "Unbalanced XML-style tags in this skill. Every opening tag needs a matching closing tag."
+level: warning
+scope: raw
+script: |
+  text := import("text")
+  opens := {}
+  closes := {}
+  first := {}
+  rest := scope
+  offset := 0
+  for {
+    s := text.index(rest, "<")
+    if s == -1 { break }
+    after := rest[s+1:]
+    e := text.index(after, ">")
+    if e == -1 { break }
+    tag := after[:e]
+    if text.has_prefix(tag, "/") {
+      name := tag[1:]
+      if len(name) > 0 && !text.contains(name, " ") {
+        closes[name] = (is_undefined(closes[name]) ? 0 : closes[name]) + 1
+        if is_undefined(first[name]) { first[name] = offset + s }
+      }
+    } else if len(tag) > 0 && !text.contains(tag, " ") && !text.has_prefix(tag, "!") && !text.has_suffix(tag, "/") {
+      opens[tag] = (is_undefined(opens[tag]) ? 0 : opens[tag]) + 1
+      if is_undefined(first[tag]) { first[tag] = offset + s }
+    }
+    offset = offset + s + 1 + e + 1
+    rest = after[e+1:]
+  }
+  matches := []
+  for name, n in opens {
+    c := is_undefined(closes[name]) ? 0 : closes[name]
+    if n != c { matches = append(matches, {begin: first[name], end: first[name] + len(name) + 2}) }
+  }
+  for name, c in closes {
+    if is_undefined(opens[name]) { matches = append(matches, {begin: first[name], end: first[name] + len(name) + 3}) }
+  }

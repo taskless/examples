@@ -1,0 +1,6 @@
+extends: existence
+message: "A 'When to Use' section belongs in the description field, which is what the agent reads to pick a skill."
+level: warning
+scope: heading
+raw:
+  - '(?i)\A\s*when\s+to\s+use\s*\z'

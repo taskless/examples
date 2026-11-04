@@ -1,0 +1,6 @@
+extends: occurrence
+message: "No <required> block. Every skill needs at least one checklist the agent must follow."
+level: warning
+scope: raw
+min: 1
+token: '(?:<required>[\s\S]*</required>|</required>[\s\S]*<required>)'

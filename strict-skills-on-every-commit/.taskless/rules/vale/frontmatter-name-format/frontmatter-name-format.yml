@@ -1,0 +1,6 @@
+extends: existence
+message: "The name must be lowercase letters, digits and single hyphens, at most 64 characters."
+level: error
+scope: frontmatter.name
+raw:
+  - '\A(?:(?![a-z0-9]+(?:-[a-z0-9]+)*\z)[\s\S]+|[\s\S]{65,})'

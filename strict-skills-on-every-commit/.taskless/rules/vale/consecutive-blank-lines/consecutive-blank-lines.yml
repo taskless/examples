@@ -1,0 +1,6 @@
+extends: existence
+message: "Two or more blank lines in a row. One is enough."
+level: warning
+scope: raw
+raw:
+  - '\n\n\n+'

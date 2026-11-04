@@ -1,0 +1,7 @@
+extends: existence
+message: "A frontmatter field the Agent Skills spec doesn't define. The spec allows name, description, license, compatibility, metadata and allowed-tools."
+level: warning
+scope: raw
+# The lookbehind walks the known keys so the finding points at the unknown one.
+raw:
+  - '(?<=\A---[ \t]*\n(?:(?:(?:name|description|license|compatibility|metadata|allowed-tools):[^\n]*|[ \t#][^\n]*|)\n)*)(?!(?:(?:name|description|license|compatibility|metadata|allowed-tools):|---))[^\s#:][^\n:]*:'

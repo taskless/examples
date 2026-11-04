@@ -1,0 +1,6 @@
+extends: existence
+message: "Trailing whitespace."
+level: warning
+scope: raw
+raw:
+  - '[^\S\n]+(?:\n|\z)'

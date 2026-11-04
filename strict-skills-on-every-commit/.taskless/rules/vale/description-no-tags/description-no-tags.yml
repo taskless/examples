@@ -1,0 +1,6 @@
+extends: existence
+message: "'%s' in the description. Anthropic's skill spec doesn't allow XML tags in the description, which is loaded into the system prompt."
+level: error
+scope: frontmatter.description
+raw:
+  - '</?[A-Za-z][^<>\n]*>'
