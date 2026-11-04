@@ -1,4 +1,4 @@
-# blog-taskless-ty
+# Taskless, ty, and the Type-Shaped Gap
 
 On 2026-09-24 Charlie Marsh [posted a thread](https://x.com/charliermarsh/status/2103199517294166518) about ty's new `redundant-condition` check, which flags conditions that are always true or always false. The classic case is `if condition:` where `condition` is a function nobody called. Those are lint-shaped bugs, so this repo rebuilds each example from the thread as a [Taskless](https://taskless.io) rule and runs it next to ty over the same code. pylint and ruff run alongside, since they're the linters a Python team already has.
 
@@ -27,7 +27,7 @@ Run the rules' own tests:
 npm run test:rules
 ```
 
-CI (`.github/workflows/check.yml`) runs those tests and `compare.sh` on every push to `main` and every pull request, and fails if the side-by-side table differs from `examples/compare.expected.txt`.
+CI (`.github/workflows/check-type-shaped-gap.yml` at the root of this repo) runs those tests and `compare.sh` on every push to `main` and every pull request, and fails if the side-by-side table differs from `examples/compare.expected.txt`.
 
 Both scripts pass `--dangerously-run-scripts` to `taskless check`. The runtime rule below runs code, and Taskless only runs runtime rules its service signed. A rule written by hand never gets that signature, so without the flag `check` skips it. Read `check.ts` before you run it. That's what the flag is asking you to do.
 
@@ -128,7 +128,6 @@ corpus/repos.txt               the six codebases, each pinned to a commit
 corpus/run.py                  the real-codebase run
 corpus/plant.py                the planted TypedDict bug in Django's tree
 corpus/results/                each tool's findings, one per line
-.github/workflows/             CI: rule tests and the snapshot check
 pyproject.toml                 pins ty, pylint and ruff
 package.json                   pins the Taskless CLI
 ```

@@ -1,9 +1,15 @@
-name: check
+name: check-type-shaped-gap
 
 on:
   push:
     branches: [main]
+    paths: ["type-shaped-gap/**", ".github/workflows/check-type-shaped-gap.yml"]
   pull_request:
+    paths: ["type-shaped-gap/**", ".github/workflows/check-type-shaped-gap.yml"]
+
+defaults:
+  run:
+    working-directory: type-shaped-gap
 
 jobs:
   rules:
@@ -16,6 +22,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: type-shaped-gap/package-lock.json
 
       - uses: astral-sh/setup-uv@v10.2.0
 

@@ -1,4 +1,4 @@
-# blog-taskless-nori-lint
+# Taskless and nori-lint: Strict Skills on Every Commit
 
 [nori-lint](https://github.com/tilework-tech/nori-lint) is an opinionated linter for `SKILL.md` files, written by the team at [Nori](https://noriagentic.com) and released under Apache-2.0. Its rules come from a clear point of view: a skill is read by an LLM, every wasted word costs context in every session, and a skill should be a short process with a checklist.
 
